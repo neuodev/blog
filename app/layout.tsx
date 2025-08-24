@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import { Section, Container } from "@/components/craft";
-import { Inter as FontSans } from "next/font/google";
+import { Cairo } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { MobileNav } from "@/components/nav/mobile-nav";
@@ -19,9 +19,8 @@ import Link from "next/link";
 
 import type { Metadata } from "next";
 
-const font = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const font = Cairo({
+  weight: ["200", "300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -40,9 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head />
-      <body className={cn("min-h-screen font-sans antialiased", font.variable)}>
+      <body
+        className={cn("min-h-screen font-sans antialiased", font.className)}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
