@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  blogdb:
+    image: mysql:latest
+    container_name: blogdb
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_DATABASE=blog
+    volumes:
+      - blogdb:/var/lib/mysql
+    networks:
+      - blog-app-network
+
+  wordpress:
+    depends_on:
+      - blogdb
+    image: wordpress:latest
+    ports:
+      - "8080:80"
+    container_name: wordpress
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - WORDPRESS_DB_HOST=blogdb
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=blog
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - blog-app-network
+
+volumes:
+  wordpress:
+    name: wordpress
+  blogdb:
+    name: blogdb
+
+networks:
+  blog-app-network:
+    name: blog-app-network
+    driver: bridge
