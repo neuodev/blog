@@ -10,7 +10,14 @@ services:
     env_file: .env
     volumes:
       - mysql:/var/lib/mysql
+    networks:
+      - mysql
 
 volumes:
   mysql:
     name: mysql
+
+networks:
+  mysql:
+    name: mysql
+    driver: bridge
